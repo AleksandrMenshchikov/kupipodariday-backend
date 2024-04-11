@@ -6,7 +6,9 @@ const whitelist: string[] = ['http://localhost:3000'];
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   app.use(helmet());
+
   app.enableCors({
     origin(origin: any, callback: any) {
       if (whitelist.includes(origin) || origin === undefined) {
@@ -20,4 +22,5 @@ async function bootstrap() {
 
   await app.listen(4000);
 }
+
 bootstrap();
