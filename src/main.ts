@@ -1,11 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import helmet from 'helmet';
+import { ValidationPipe } from '@nestjs/common';
+import { GlobalExceptionFilter } from './global-exception.filter';
 
 const whitelist: string[] = ['http://localhost:3000'];
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.useGlobalPipes(new ValidationPipe());
+
+  app.useGlobalFilters(new GlobalExceptionFilter());
 
   app.use(helmet());
 

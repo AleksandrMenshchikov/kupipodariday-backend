@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DEVELOPMENT, POSTGRES } from './constants';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { UsersModule } from './users/users.module';
+import { WishesModule } from './wishes/wishes.module';
+import { OffersModule } from './offers/offers.module';
+import { WishlistsModule } from './wishlists/wishlists.module';
 
 @Module({
   imports: [
@@ -27,8 +30,12 @@ import { APP_GUARD } from '@nestjs/core';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: process.env.NODE_ENV === DEVELOPMENT,
     }),
+    UsersModule,
+    WishesModule,
+    OffersModule,
+    WishlistsModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
     {
       provide: APP_GUARD,
