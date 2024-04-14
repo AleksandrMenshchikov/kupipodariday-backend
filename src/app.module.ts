@@ -9,6 +9,9 @@ import { WishesModule } from './wishes/wishes.module';
 import { OffersModule } from './offers/offers.module';
 import { WishlistsModule } from './wishlists/wishlists.module';
 import { SignupModule } from './signup/signup.module';
+import { SigninModule } from './signin/signin.module';
+import { AuthModule } from './auth/auth.module';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -31,17 +34,23 @@ import { SignupModule } from './signup/signup.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: process.env.NODE_ENV === DEVELOPMENT,
     }),
+    AuthModule,
     UsersModule,
     WishesModule,
     OffersModule,
     WishlistsModule,
     SignupModule,
+    SigninModule,
   ],
   controllers: [],
   providers: [
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
     },
   ],
 })
