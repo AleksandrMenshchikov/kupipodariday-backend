@@ -1,9 +1,4 @@
-import {
-  Catch,
-  ExceptionFilter,
-  ArgumentsHost,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Catch, ExceptionFilter, ArgumentsHost } from '@nestjs/common';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { TypeORMError } from 'typeorm';
 
@@ -18,14 +13,19 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     let message: unknown;
 
     if (exception instanceof TypeORMError) {
-      status = HttpStatus.BAD_REQUEST;
-      message = (exception as any).detail || (exception as any).message;
+      if ((exception as any).code === '23505') {
+        status = HttpStatus.CONFLICT;
+        message = (exception as any).detail || exception.message;
+      } else {
+        status = HttpStatus.BAD_REQUEST;
+        message = (exception as any).detail || exception.message;
+      }
     } else if (exception instanceof HttpException) {
       status = exception.getStatus();
       message = (exception.getResponse() as any).message;
     } else {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
-      message = new InternalServerErrorException('Internal Server Error');
+      message = (exception as any).message;
     }
 
     response.status(status).json({

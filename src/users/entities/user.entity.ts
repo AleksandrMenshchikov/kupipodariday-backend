@@ -2,6 +2,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
+  JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -16,6 +18,7 @@ export class User {
   id: number;
 
   @Column({ type: 'varchar', length: 64, unique: true })
+  @Index()
   username: string;
 
   @Column({
@@ -35,12 +38,15 @@ export class User {
   password: string;
 
   @OneToOne(() => Wish, (wish) => wish.owner)
+  @JoinColumn()
   wishes: Wish[];
 
   @OneToOne(() => Offer, (offer) => offer.user)
+  @JoinColumn()
   offers: Offer[];
 
   @OneToOne(() => Wishlist, (wishlist) => wishlist.owner)
+  @JoinColumn()
   wishlists: Wishlist[];
 
   @CreateDateColumn()

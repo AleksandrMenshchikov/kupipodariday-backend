@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { WishesModule } from './wishes/wishes.module';
 import { OffersModule } from './offers/offers.module';
 import { WishlistsModule } from './wishlists/wishlists.module';
+import { SignupModule } from './signup/signup.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { WishlistsModule } from './wishlists/wishlists.module';
     WishesModule,
     OffersModule,
     WishlistsModule,
+    SignupModule,
   ],
   controllers: [],
   providers: [
