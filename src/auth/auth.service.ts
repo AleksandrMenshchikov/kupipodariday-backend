@@ -2,6 +2,7 @@ import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { IUserPayload } from '../types';
 
 @Injectable()
 export class AuthService {
@@ -30,11 +31,11 @@ export class AuthService {
     return rest;
   }
 
-  signin(username: string) {
-    const payload = { username };
+  signin(id: number) {
+    const payload: IUserPayload = { id };
     return {
       access_token: this.jwtService.sign(payload, {
-        expiresIn: '5s',
+        expiresIn: '7d',
         secret: process.env.JWT_SECRET,
       }),
     };

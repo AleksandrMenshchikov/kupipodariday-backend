@@ -8,7 +8,7 @@ export class SigninService {
 
   async createJwt(createSigninDto: CreateSigninDto) {
     const { username, password } = createSigninDto;
-    await this.authService.validateUser(username, password);
-    return this.authService.signin(username);
+    const { id } = await this.authService.validateUser(username, password);
+    return this.authService.signin(id);
   }
 }

@@ -1,12 +1,4 @@
-import { IsString, MaxLength, MinLength } from 'class-validator';
+import { PickType } from '@nestjs/mapped-types';
+import { User } from '../../users/entities/user.entity';
 
-export class CreateSigninDto {
-  @MinLength(3)
-  @MaxLength(64)
-  @IsString()
-  username: string;
-
-  @MinLength(3)
-  @IsString()
-  password: string;
-}
+export class CreateSigninDto extends PickType(User, ['username', 'password']) {}

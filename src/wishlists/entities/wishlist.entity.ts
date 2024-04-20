@@ -2,28 +2,47 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToOne,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Wish } from '../../wishes/entities/wish.entity';
+import {
+  IsArray,
+  IsString,
+  IsUrl,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
 @Entity('wishlist')
 export class Wishlist {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 250 })
+  @Column({ length: 250 })
+  @MinLength(1)
+  @MaxLength(250)
+  @IsString()
   name: string;
 
   @Column()
+  @IsUrl()
   image: string;
 
-  @OneToOne(() => User, (user) => user.wishlists)
+  @Column()
+  ownerId: number;
+
+  @ManyToOne(() => User, (user) => user.wishlists)
   owner: User;
 
-  @OneToOne(() => Wish)
+  @Column('int', { array: true })
+  @IsArray()
+  itemsId: number[];
+
+  @OneToMany(() => Wish, (wish) => wish.wishlists)
   items: Wish[];
 
   @CreateDateColumn()
