@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUsersDto } from './dto/update-users.dto';
-import { User } from '../custom-decorators';
-import { IQuery, IUserPayload } from '../types';
+import { User } from '../shared/custom-decorators';
+import { IQuery, IUserPayload } from '../shared/types';
 
 @Controller('users')
 export class UsersController {

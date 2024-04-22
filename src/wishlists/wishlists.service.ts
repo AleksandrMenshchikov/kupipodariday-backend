@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Wishlist } from './entities/wishlist.entity';
 import { Repository } from 'typeorm';
 import { CreateWishlistDto } from './dto/create-wishlists.dto';
-import { IUserPayload } from '../types';
+import { IUserPayload } from '../shared/types';
 import { UpdateWishlistDto } from './dto/update-wishlists.dto';
 
 @Injectable()

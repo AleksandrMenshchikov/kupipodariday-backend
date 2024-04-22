@@ -1,8 +1,9 @@
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { IUserPayload } from '../types';
+import { IUserPayload } from '../shared/types';
 import { bcryptCompare } from '../shared/bcrypt';
+import { SigninDto } from './dto/signin.dto';
 
 @Injectable()
 export class AuthService {
@@ -31,8 +32,11 @@ export class AuthService {
     return rest;
   }
 
-  signin(id: number) {
+  async signin(signinDto: SigninDto) {
+    const { username, password } = signinDto;
+    const { id } = await this.validateUser(username, password);
     const payload: IUserPayload = { id };
+
     return {
       access_token: this.jwtService.sign(payload, {
         expiresIn: '7d',

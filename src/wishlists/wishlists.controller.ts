@@ -9,8 +9,8 @@ import {
 } from '@nestjs/common';
 import { WishlistsService } from './wishlists.service';
 import { CreateWishlistDto } from './dto/create-wishlists.dto';
-import { User } from '../custom-decorators';
-import { IUserPayload } from '../types';
+import { User } from '../shared/custom-decorators';
+import { IUserPayload } from '../shared/types';
 import { UpdateWishlistDto } from './dto/update-wishlists.dto';
 
 @Controller('wishlistlists')

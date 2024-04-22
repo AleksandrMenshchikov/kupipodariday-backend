@@ -3,14 +3,24 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { UpdateUsersDto } from './dto/update-users.dto';
-import { IQuery } from '../types';
+import { IQuery } from '../shared/types';
 import { bcryptHash } from '../shared/bcrypt';
+import { CreateUsersDto } from './dto/create-users.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
+
+  async create(createUsersDto: CreateUsersDto) {
+    const { password } = createUsersDto;
+    createUsersDto.password = await bcryptHash(password);
+    const data = await this.userRepository.save(createUsersDto);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: pass, ...rest } = data;
+    return rest;
+  }
 
   findOne(username: string) {
     return this.userRepository.findOne({

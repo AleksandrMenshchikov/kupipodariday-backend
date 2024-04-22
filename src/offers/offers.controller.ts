@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { OffersService } from './offers.service';
 import { CreateOffersDto } from './dto/create-offers.dto';
-import { User } from '../custom-decorators';
-import { IUserPayload } from '../types';
+import { User } from '../shared/custom-decorators';
+import { IUserPayload } from '../shared/types';
 
 @Controller('offers')
 export class OffersController {

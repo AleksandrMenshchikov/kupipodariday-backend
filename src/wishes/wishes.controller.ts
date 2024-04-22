@@ -9,8 +9,8 @@ import {
 } from '@nestjs/common';
 import { WishesService } from './wishes.service';
 import { CreateWishesDto } from './dto/create-wishes.dto';
-import { IUserPayload } from '../types';
-import { User } from '../custom-decorators';
+import { IUserPayload } from '../shared/types';
+import { Public, User } from '../shared/custom-decorators';
 import { UpdateWishesDto } from './dto/update-wishes.dto';
 
 @Controller('wishes')
@@ -27,11 +27,13 @@ export class WishesController {
     return this.wishesService.createCopy(id, userId);
   }
 
+  @Public()
   @Get('last')
   findUserLast() {
     return this.wishesService.findUserLast();
   }
 
+  @Public()
   @Get('top')
   findUserTop() {
     return this.wishesService.findUserTop();

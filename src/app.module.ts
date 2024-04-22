@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DEVELOPMENT, POSTGRES } from './constants';
+import { DEVELOPMENT, POSTGRES } from './shared/constants';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
@@ -8,8 +8,6 @@ import { UsersModule } from './users/users.module';
 import { WishesModule } from './wishes/wishes.module';
 import { OffersModule } from './offers/offers.module';
 import { WishlistsModule } from './wishlists/wishlists.module';
-import { SignupModule } from './signup/signup.module';
-import { SigninModule } from './signin/signin.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
@@ -39,8 +37,6 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
     WishesModule,
     OffersModule,
     WishlistsModule,
-    SignupModule,
-    SigninModule,
   ],
   controllers: [],
   providers: [

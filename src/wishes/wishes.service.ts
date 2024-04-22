@@ -8,7 +8,7 @@ import { Wish } from './entities/wish.entity';
 import { Repository } from 'typeorm';
 import { CreateWishesDto } from './dto/create-wishes.dto';
 import { UpdateWishesDto } from './dto/update-wishes.dto';
-import { IUserPayload } from '../types';
+import { IUserPayload } from '../shared/types';
 
 @Injectable()
 export class WishesService {
