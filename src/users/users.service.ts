@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { UpdateUsersDto } from './dto/update-users.dto';
-import * as bcrypt from 'bcrypt';
 import { IQuery } from '../types';
+import { bcryptHash } from '../shared/bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -79,7 +79,7 @@ export class UsersService {
     let pass: string;
 
     if (password) {
-      pass = await bcrypt.hash(password, 10);
+      pass = await bcryptHash(password);
       updateUsersDto.password = pass;
     }
 
