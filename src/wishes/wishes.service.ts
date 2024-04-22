@@ -16,14 +16,26 @@ export class WishesService {
     @InjectRepository(Wish) readonly wishRepository: Repository<Wish>,
   ) {}
 
-  create(createWishesDto: CreateWishesDto, userId: number) {
+  create(
+    createWishesDto: CreateWishesDto,
+    userId: number,
+  ): Promise<
+    {
+      ownerId: number;
+      name: string;
+      link: string;
+      image: string;
+      price: number;
+      description: string;
+    } & Wish
+  > {
     return this.wishRepository.save({
       ...createWishesDto,
       ownerId: userId,
     });
   }
 
-  findUserLast() {
+  findUserLast(): Promise<Wish[]> {
     return this.wishRepository.find({
       order: { id: 'DESC' },
       take: 1,
@@ -31,7 +43,7 @@ export class WishesService {
     });
   }
 
-  findUserTop() {
+  findUserTop(): Promise<Wish[]> {
     return this.wishRepository.find({
       order: { copied: 'DESC' },
       take: 10,
@@ -39,7 +51,7 @@ export class WishesService {
     });
   }
 
-  async findById(id: number) {
+  async findById(id: number): Promise<Wish> {
     const data = await this.wishRepository.findOne({
       where: { id },
       relations: ['owner'],
@@ -56,7 +68,7 @@ export class WishesService {
     userId: IUserPayload,
     id: number,
     updateWishesDto: UpdateWishesDto,
-  ) {
+  ): Promise<Wish | null> {
     const found1 = await this.wishRepository.findOne({
       where: { id },
     });
@@ -81,7 +93,7 @@ export class WishesService {
     });
   }
 
-  async delete(userId: IUserPayload, id: number) {
+  async delete(userId: IUserPayload, id: number): Promise<Wish> {
     const found1 = await this.wishRepository.findOne({
       where: { id },
       relations: { owner: true },
@@ -104,7 +116,7 @@ export class WishesService {
     return found1;
   }
 
-  async createCopy(id: number, userId: IUserPayload) {
+  async createCopy(id: number, userId: IUserPayload): Promise<Wish | null> {
     const found1 = await this.wishRepository.findOne({
       where: { id },
     });

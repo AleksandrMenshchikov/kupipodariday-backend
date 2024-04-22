@@ -4,6 +4,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { IUserPayload } from '../shared/types';
 import { bcryptCompare } from '../shared/bcrypt';
 import { SigninDto } from './dto/signin.dto';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +13,10 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, pass: string) {
+  async validateUser(
+    username: string,
+    pass: string,
+  ): Promise<Omit<User, 'password'>> {
     const user = await this.usersService.findOne(username);
 
     if (!user) {
@@ -32,7 +36,7 @@ export class AuthService {
     return rest;
   }
 
-  async signin(signinDto: SigninDto) {
+  async signin(signinDto: SigninDto): Promise<{ access_token: string }> {
     const { username, password } = signinDto;
     const { id } = await this.validateUser(username, password);
     const payload: IUserPayload = { id };

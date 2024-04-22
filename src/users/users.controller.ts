@@ -3,6 +3,7 @@ import { UsersService } from './users.service';
 import { UpdateUsersDto } from './dto/update-users.dto';
 import { User } from '../shared/custom-decorators';
 import { IQuery, IUserPayload } from '../shared/types';
+import { Wish } from '../wishes/entities/wish.entity';
 
 @Controller('users')
 export class UsersController {
@@ -14,7 +15,7 @@ export class UsersController {
   }
 
   @Get('me/wishes')
-  findUserWishes(@User() user: IUserPayload) {
+  findUserWishes(@User() user: IUserPayload): Promise<Wish[]> {
     return this.usersService.findUserWishes(user.id);
   }
 
@@ -24,7 +25,7 @@ export class UsersController {
   }
 
   @Get(':username/wishes')
-  findUsernameWishes(@Param('username') username: string) {
+  findUsernameWishes(@Param('username') username: string): Promise<Wish[]> {
     return this.usersService.findUsernameWishes(username);
   }
 
