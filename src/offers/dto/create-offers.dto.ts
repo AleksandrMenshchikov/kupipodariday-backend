@@ -4,5 +4,5 @@ import { Offer } from '../entities/offer.entity';
 export class CreateOffersDto extends PickType(Offer, [
   'amount',
   'hidden',
-  'item',
+  'itemId',
 ]) {}

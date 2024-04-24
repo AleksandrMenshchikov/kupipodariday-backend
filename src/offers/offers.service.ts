@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Offer } from './entities/offer.entity';
@@ -10,14 +14,35 @@ export class OffersService {
   constructor(
     @InjectRepository(Offer)
     private readonly offerRepository: Repository<Offer>,
+    @InjectRepository(Wish) private readonly wishRepository: Repository<Wish>,
   ) {}
 
-  create(
+  async create(
     createOffersDto: CreateOffersDto,
     userId: number,
   ): Promise<
     { userId: number; amount: number; hidden: boolean; item: Wish } & Offer
   > {
+    const data = await this.wishRepository.findOne({
+      where: { id: createOffersDto.itemId },
+    });
+
+    if (!data) {
+      throw new NotFoundException(`${createOffersDto.itemId} does not exist.`);
+    }
+
+    if (data.ownerId === userId) {
+      throw new ForbiddenException(
+        'User should not be able to contribute money towards own gifts.',
+      );
+    }
+
+    if (createOffersDto.amount > data.price) {
+      throw new ForbiddenException(
+        'User should not be able to deposit more money than his own price.',
+      );
+    }
+
     return this.offerRepository.save({ ...createOffersDto, userId });
   }
 
