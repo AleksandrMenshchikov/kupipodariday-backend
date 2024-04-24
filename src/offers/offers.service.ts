@@ -37,11 +37,15 @@ export class OffersService {
       );
     }
 
-    if (createOffersDto.amount > data.price) {
+    if (createOffersDto.amount + data.raised > data.price) {
       throw new ForbiddenException(
-        'User should not be able to deposit more money than his own price.',
+        'User should not be able to deposit more money than sum of price + raised.',
       );
     }
+
+    await this.wishRepository.update(createOffersDto.itemId, {
+      raised: createOffersDto.amount + data.raised,
+    });
 
     return this.offerRepository.save({ ...createOffersDto, userId });
   }
